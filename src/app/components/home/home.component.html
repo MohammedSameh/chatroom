@@ -1,0 +1,11 @@
+<div class="home-container">
+  <h1>Time to play the game</h1>
+  <div class="options">
+    <button (click)="createRoom()">Create Room</button>
+    <div class="join-room">
+      <input type="text" [(ngModel)]="joinRoomCode" placeholder="Enter Room Code" maxlength="4" />
+      <input type="text" [(ngModel)]="username" placeholder="Enter Your Name" />
+      <button (click)="joinRoom()">Join Room</button>
+    </div>
+  </div>
+</div>

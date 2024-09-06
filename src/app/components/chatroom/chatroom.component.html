@@ -1,0 +1,11 @@
+<div class="chatroom-container">
+  <h2>Room Code: {{ roomCode }}</h2>
+  <h3>Players:</h3>
+  <ul>
+    <li *ngFor="let user of users">{{ user }}</li>
+  </ul>
+  <button *ngIf="isHost" (click)="startGame()">Start Game</button>
+  <div *ngIf="!isHost">
+    <p>Waiting for the host to start the game...</p>
+  </div>
+</div>

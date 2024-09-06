@@ -1,0 +1,51 @@
+<div class="game-container">
+  <!-- Normal game view -->
+  <div *ngIf="!gameOver && !showWinner">
+    <h2>Prompt {{ promptNumber }}:</h2>
+    <p>{{ currentPrompt }}</p>
+
+    <div *ngIf="!responseSubmitted">
+      <textarea [(ngModel)]="responseText" placeholder="Enter your response here..."></textarea>
+      <button (click)="submitResponse()" [disabled]="responseSubmitted || !responseText">Submit</button>
+      <p>Time left: {{ timeLeft }} seconds</p>
+    </div>
+
+    <div *ngIf="responseSubmitted && !voting">
+      <h3>Responses:</h3>
+      <ul>
+        <li *ngFor="let res of responseList">
+          {{ res.user }}: {{ res.response }}
+        </li>
+      </ul>
+      <!-- <button (click)="startVoting()">Vote for Your Favorite</button> -->
+    </div>
+
+    <div *ngIf="voting">
+      <h3>Vote for Your Favorite Response:</h3>
+      <ul *ngIf="!voteSubmitted">
+        <li *ngFor="let res of responseList">
+          <input type="radio" name="vote" [value]="res.user" [(ngModel)]="selectedVote" /> {{ res.user }}: {{ res.response }}
+        </li>
+      </ul>
+      <button *ngIf="!voteSubmitted" (click)="submitVote()" [disabled]="!selectedVote">Submit Vote</button>
+
+      <!-- Show message when vote is cast -->
+      <p *ngIf="voteSubmitted">Your vote has been cast. Waiting for others to vote...</p>
+      <p *ngIf="!voteSubmitted">Time left to vote: {{ voteTimeLeft }} seconds</p>
+    </div>
+  </div>
+
+  <!-- Winner view -->
+  <div *ngIf="showWinner && !gameOver">
+    <h3>Round Winner: {{ winner }}</h3>
+    <div *ngIf="isHost">
+      <button (click)="startNewGame()">Start New Game</button>
+    </div>
+  </div>
+
+  <!-- Game Over View -->
+  <div *ngIf="gameOver">
+    <h2>Game Over!</h2>
+    <p>Thank you for playing.</p>
+  </div>
+</div>
