@@ -1,5 +1,3 @@
-// src/app/services/socket.service.ts
-
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
@@ -10,7 +8,7 @@ import { environment } from 'src/environments/environment';
 })
 export class SocketService {
   private socket: Socket;
-  private SERVER_URL = environment.apiUrl; //'http://localhost:3000'; // Adjust if different
+  private SERVER_URL = environment.apiUrl; //'http://localhost:3000';
 
   constructor() {
     this.socket = io(this.SERVER_URL);
@@ -83,7 +81,7 @@ export class SocketService {
     });
   }
 
-  // Add more listeners as needed
+  // TODO: Add more listeners as needed
 
   onPlayAgainRequest(): Observable<any> {
     return new Observable(observer => {

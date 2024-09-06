@@ -25,8 +25,8 @@ export class GameComponent implements OnInit, OnDestroy {
   winner: string = '';
   gameOver: boolean = false;
   showWinner: boolean = false;  // Control for winner view
-  voteSubmitted: boolean = false;  // Track if the user has cast their vote
-  voteTimeLeft: number = 30;  // Voting time limit (30 seconds)
+  voteSubmitted: boolean = false;
+  voteTimeLeft: number = 30;
   private subscriptions: Subscription[] = [];
   timeLeft: number = 60;
   isHost: boolean = false;
@@ -35,8 +35,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private socketService: SocketService,
-    private router: Router
+    private socketService: SocketService
   ) { }
 
   ngOnInit(): void {
@@ -59,7 +58,7 @@ export class GameComponent implements OnInit, OnDestroy {
     const sub2 = this.socketService.onShowResponses().subscribe((responses: any) => {
       // Expecting to receive responses with usernames
       this.responseList = Object.keys(responses).map(username => ({
-        user: username, // Display the username now
+        user: username, // Displays the username
         response: responses[username]
       }));
     });
@@ -67,10 +66,10 @@ export class GameComponent implements OnInit, OnDestroy {
     // Listen for the start of voting (from the server) and start voting timer
     const sub3 = this.socketService.onStartVoting().subscribe(() => {
       this.voting = true;
-      this.startVotingTimer(); // Start the 30-second timer for voting
+      this.startVotingTimer();
     });
 
-    // Listen for round winner (combined logic for single winner and tie)
+    // Listen for round winner
     const sub4 = this.socketService.onRoundWinner().subscribe((data: any) => {
       // Update the winner in the UI
       if (Array.isArray(data.winner)) {
@@ -107,12 +106,12 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Start the voting timer (30 seconds)
+  // Start the voting timer
   startVotingTimer() {
     if (this.voteTimerInterval) {
       clearInterval(this.voteTimerInterval); // Clear any previous voting timer
     }
-    this.voteTimeLeft = 30; // Reset voting timer to 30 seconds
+    this.voteTimeLeft = 30; // Reset voting timer
     this.voteTimerInterval = setInterval(() => {
       if (this.voteTimeLeft > 0) {
         this.voteTimeLeft--;
@@ -127,7 +126,7 @@ export class GameComponent implements OnInit, OnDestroy {
   submitVote() {
     this.socketService.vote(this.roomCode, this.selectedVote);
     this.selectedVote = '';
-    this.voteSubmitted = true;  // Mark that the vote has been submitted
+    this.voteSubmitted = true;
     clearInterval(this.voteTimerInterval); // Stop the voting timer after vote is cast
   }
 
@@ -136,14 +135,14 @@ export class GameComponent implements OnInit, OnDestroy {
     this.responseSubmitted = false;
     this.responseList = [];
     this.voting = false;
-    this.voteSubmitted = false;  // Reset the vote submission state
+    this.voteSubmitted = false;
     this.winner = '';
-    this.showWinner = false;  // Reset the winner screen when the game resets
-    this.voteTimeLeft = 30;  // Reset the voting timer for the next round
-    this.timeLeft = 60;  // Reset the round timer for the next round
+    this.showWinner = false;
+    this.voteTimeLeft = 30;
+    this.timeLeft = 60;
   }
 
-  // Start the round timer (60 seconds)
+  // Start the round timer
   startTimer() {
     if (this.timerInterval) {
       clearInterval(this.timerInterval); // Clear any previous timer
@@ -155,7 +154,7 @@ export class GameComponent implements OnInit, OnDestroy {
       } else {
         clearInterval(this.timerInterval); // Stop timer when time is up
       }
-    }, 1000); // Update every second
+    }, 1000);
   }
 
   ngOnDestroy(): void {
