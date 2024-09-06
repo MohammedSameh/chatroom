@@ -3,13 +3,14 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SocketService {
   private socket: Socket;
-  private SERVER_URL = 'http://localhost:3000'; // Adjust if different
+  private SERVER_URL = environment.apiUrl; //'http://localhost:3000'; // Adjust if different
 
   constructor() {
     this.socket = io(this.SERVER_URL);
